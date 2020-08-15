@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import ContactList from './contactList/ContactList';
+import { v4 as uuidv4 } from 'uuid';
+
 
 export default class Phonebook extends Component {
 
@@ -8,19 +11,45 @@ export default class Phonebook extends Component {
       }
       
 
-      handleChange=(e)=>{
-this.setState({value: e.target.value})
+      addContact= name =>{
+          const contact = {
+              name: name,
+              id: uuidv4()
+          };
+
+          this.setState(prevState=>{
+              return{
+                  contacts:[...prevState.contacts, contact]
+              }
+          })
       }
+
+      handleChange=(e)=>{
+           this.setState({name: e.target.value})
+      }
+
+      handleSubmit = evt => {
+            evt.preventDefault();
+            this.addContact(this.state.name);
+             this.setState({name:''});
+            
+      }
+
     render() {
-        const {name}= this.props;
+        const {name, contacts}= this.state;
+       
         return (
             <>
-            <form onSubmit={this.handleChange}>
+            <h1>Phonebook</h1>
+            <form onSubmit={this.handleSubmit}>
                 <label>
-                    Name <input type="text" name="name" value={name}  placeholder="Enter name"></input>
+                    Name <input type="text" name="name" value={name}   onChange={this.handleChange} placeholder="Enter name"></input>
                 </label>
-                <button type="submit">Add contact</button>
+                <button type="submit" >Add contact</button>
             </form>
+           
+            {contacts.length>0 &&  <ContactList  contacts={contacts}/>  }
+            
 
 </>
         )
