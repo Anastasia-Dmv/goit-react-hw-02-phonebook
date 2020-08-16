@@ -1,19 +1,33 @@
 import React, { Component } from 'react';
+import style from './contactList.module.css';
+import PropTypes from 'prop-types';
 
 
 export default class ContactList extends Component {
+  
     render() {
-        const {contacts} = this.props;
+        const {contacts, deleteContact} = this.props;
         
         return (
-<>
-            <h2>Contacts</h2>
-            <ul>
-                {contacts.map(contact=> 
-                    <li key={contact.id}>{contact.name}</li>)}
+
+           
+            <ul className={style.list}>
+                {contacts.map(({id, name, number})=> 
+                    <li className={style.items} key={id}>{name} : {number} 
+                    <button  className={style.button}type="button" id={id} onClick={e=>deleteContact(e.target.id)}>Delete</button></li>)}
                 
             </ul>
-            </>
+            
         )
     }
+}
+ContactList.propTypes = {
+    contacts:PropTypes.arrayOf(
+        PropTypes.shape({
+            id:PropTypes.string,
+            name: PropTypes.string,
+            number:PropTypes.string
+        })
+    ),
+    deleteContact: PropTypes.func,
 }
