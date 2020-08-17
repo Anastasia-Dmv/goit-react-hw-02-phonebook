@@ -54,7 +54,7 @@ export default class ContactForm extends Component {
 }
 ContactForm.propTypes={
     state: PropTypes.shape({
-       name:PropTypes.string,
-       number:PropTypes.string,
+       name:PropTypes.string.isRequired,
+       number:PropTypes.string.isRequired
     })
 }
